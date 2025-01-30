@@ -305,10 +305,10 @@ function isValidFilename(filename) {
 }
 
 async function handlePutRequest(request, env, kv, ctx) {
-  const BASE_URL = env.KV_BASE_URL || "https://fd2.me";
+  const url = new URL(request.url);
+  const BASE_URL = env.KV_BASE_URL || `${url.protocol}//${url.host}`;
   const FILE_TTL = parseInt(env.KV_DEFAULT_FILE_TTL) || 14400;
   const MAX_FILE_SIZE = parseInt(env.KV_MAX_FILE_SIZE_BYTES) || 26214400;
-  const url = new URL(request.url);
   const filename = url.pathname.substring(1);
 
   if (!isValidFilename(filename)) {
